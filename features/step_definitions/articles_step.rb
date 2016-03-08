@@ -39,12 +39,3 @@ Given /^I am logged in as "(.*?)" with password "(.*?)"$/ do |user, password|
   click_button 'Login'
   assert page.has_content? 'Login successful'
 end
-
-Given /^the article with ids "(.*?)" and "(.*?)" were merged$/ do |id1, id2|
-  article = Article.find_by_id(id1)
-  article.merge_with(id2)
-end
-
-Then /^"(.*?)" should be author of (\d+) articles$/ do |user, count|
-  assert Article.find_all_by_author(User.find_by_name(user).login).size == Integer(count)
-end
