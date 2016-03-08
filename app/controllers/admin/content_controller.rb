@@ -112,6 +112,23 @@ class Admin::ContentController < Admin::BaseController
     end
     render :text => nil
   end
+  
+  def merge_articles
+    @article = Article.find(params[:id])
+
+    if not current_user.admin?
+      flash[:error] = _("Error, only admin user can merge articles")
+      return(redirect_to action: 'index')
+    end
+
+    if @article.merge_with(params[:merge_with])
+      flash[:notice] = _('Articles merge successful')
+      redirect_to action: :index
+    else
+      flash[:error] = _('Error, invalid ID to merge')
+      redirect_to action: :index
+    end
+  end
 
   protected
 
@@ -240,4 +257,5 @@ class Admin::ContentController < Admin::BaseController
   def setup_resources
     @resources = Resource.by_created_at
   end
+  
 end
